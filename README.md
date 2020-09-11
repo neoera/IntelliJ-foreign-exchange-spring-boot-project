@@ -1,2 +1,2 @@
-# IntelliJ-foreign-exchange-spring-boot-project
-Foreign exchange project built with spring-boot
+# IntelliJ-transfer-system-spring-boot-project
+Transfer system built with spring-boot
