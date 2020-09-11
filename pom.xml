@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.openpayd</groupId>
-    <artifactId>fex</artifactId>
+    <artifactId>ats</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>fex</name>
-    <description>Fex project for Spring Boot</description>
+    <name>ats</name>
+    <description>Ots project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -20,13 +20,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <swagger-ui.version>3.9.2</swagger-ui.version>
         <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
-        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
-        <swagger-annotations.version>1.5.17</swagger-annotations.version>
         <javax.json-api.version>1.1.4</javax.json-api.version>
         <org.apache.httpcomponents.version>4.4.6</org.apache.httpcomponents.version>
         <spring-boot-starter-data-jpa.version>2.2.4.RELEASE</spring-boot-starter-data-jpa.version>
-        <hsqldb.version>2.4.0</hsqldb.version>
-        <h2.version>1.4.200</h2.version>
+        <dozer-version>5.4.0</dozer-version>
+        <spring-boot-test-autoconfigure-version>2.2.4.RELEASE</spring-boot-test-autoconfigure-version>
+        <springfox-swagger-verison>2.9.2</springfox-swagger-verison>
+        <springfox-boot-starter-verison>3.0.0</springfox-boot-starter-verison>
     </properties>
 
     <dependencies>
@@ -84,23 +84,32 @@
             <artifactId>spring-web</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>${javax.ws.rs-api.version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
         </dependency>
 
-        <!-- Swagger dependencies -->
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>swagger-ui</artifactId>
-            <version>${swagger-ui.version}</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger-verison}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+        <!-- <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox-boot-starter-verison}</version>
+        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-annotations.version}</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger-verison}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
         <dependency>
             <groupId>javax.json</groupId>
@@ -120,14 +129,6 @@
             <version>${spring-boot-starter-data-jpa.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
@@ -137,22 +138,37 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-jdbc</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test-autoconfigure</artifactId>
-            <version>2.2.4.RELEASE</version>
+            <version>${spring-boot-test-autoconfigure-version}</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
             <version>4.7</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>5.2.3.RELEASE</version>
+            <version>${org.springframework.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer-version}</version>
+        </dependency>
+
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
 
