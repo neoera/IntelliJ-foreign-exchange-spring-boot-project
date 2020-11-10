@@ -1,4 +1,4 @@
-package com.getir.rig.exception;
+package com.getir.rig.exception.type;
 
 import com.getir.rig.util.RigConstants;
 

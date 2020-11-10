@@ -11,10 +11,9 @@ import java.util.List;
 @ToString
 public class OrderRequest {
 
-    @NotNull
-    @NotEmpty(message = "Customer id can not be empty")
+    @NotNull(message = "Customer id can not be null")
     private Long customerId;
     @NotNull
-    @NotEmpty(message = "Order item can not be empty")
-    private List<OrderItemVo> orderItemVos;
+    @NotEmpty(message = "Order item list can not be empty")
+    private List<OrderItemVo> orderItemList;
 }

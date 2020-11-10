@@ -1,4 +1,4 @@
-package com.getir.rig.exception;
+package com.getir.rig.exception.type;
 
 class ApiException extends Exception{
   ApiException(int code, String msg) {

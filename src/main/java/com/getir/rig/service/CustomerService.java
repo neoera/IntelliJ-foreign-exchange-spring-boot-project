@@ -7,7 +7,7 @@ import com.getir.rig.dto.page.CustomerPageResult;
 import com.getir.rig.dto.page.OrderPageResult;
 import com.getir.rig.entity.Customer;
 import com.getir.rig.entity.Order;
-import com.getir.rig.exception.RecordNotFoundException;
+import com.getir.rig.exception.type.RecordNotFoundException;
 import com.getir.rig.repository.CustomerRepository;
 import com.getir.rig.repository.OrderRepository;
 import com.getir.rig.util.RigValidationEnum;

@@ -5,14 +5,14 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @ToString
 public class OrderItemVo {
-    @NotNull
-    @NotEmpty(message = "Quantity id can not be empty")
+    @NotNull(message = "Quantity can not be null")
+    @Size(max = 1000, min = 1)
     private Integer quantity;
-    @NotNull
-    @NotEmpty(message = "Empty product id")
+    @NotNull(message = "Product id can not be null")
     private Long productId;
 }

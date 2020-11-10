@@ -1,23 +1,19 @@
 package com.getir.rig.service;
 
 import com.getir.rig.dto.OrderDto;
-import com.getir.rig.dto.OrderItemDto;
-import com.getir.rig.dto.page.OrderPageResult;
 import com.getir.rig.entity.*;
-import com.getir.rig.exception.RecordNotFoundException;
+import com.getir.rig.exception.type.RecordNotFoundException;
 import com.getir.rig.repository.CustomerRepository;
 import com.getir.rig.repository.OrderRepository;
 import com.getir.rig.repository.ProductRepository;
 import com.getir.rig.repository.StockRepository;
 import com.getir.rig.util.RigValidationEnum;
+import com.getir.rig.viewobject.OrderRequest;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,18 +42,18 @@ public class OrderService {
     }
 
     @Transactional
-    public Order create(OrderDto orderDto) {
-        logger.info("creating new order: {}", orderDto);
+    public Order create(OrderRequest orderRequest) {
+        logger.info("creating new order: {}", orderRequest);
 
         Order order = new Order();
-        Optional<Customer> customer = customerRepository.findById(orderDto.getCustomerId());
+        Optional<Customer> customer = customerRepository.findById(orderRequest.getCustomerId());
         if (!customer.isPresent()){
             throw new RecordNotFoundException(RigValidationEnum.CUSTOMER_NOT_FOUND.getMessage());
         }
         order.setCustomer(customer.get());
 
         List<OrderItem> orderItems = new ArrayList<>();
-        orderDto.getOrderItemDtos().forEach(orderItemDto -> {
+        orderRequest.getOrderItemList().forEach(orderItemDto -> {
             Product product = productRepository.getOne(orderItemDto.getProductId());
 
             Stock stock = product.getStock();

@@ -2,9 +2,9 @@ package com.getir.rig.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Utils {
+public class RigUtils {
 
-    private Utils() {
+    private RigUtils() {
     }
 
     private static final String PLUS = "+";

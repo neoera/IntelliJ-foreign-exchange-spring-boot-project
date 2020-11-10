@@ -1,12 +1,13 @@
 package com.getir.rig.ws;
 
-import com.getir.rig.dto.page.CustomerPageResult;
+import com.getir.rig.dto.ProductDto;
 import com.getir.rig.dto.page.OrderPageResult;
-import com.getir.rig.entity.Customer;
-import com.getir.rig.service.CustomerService;
+import com.getir.rig.dto.page.ProductPageResult;
+import com.getir.rig.entity.Product;
+import com.getir.rig.service.ProductService;
 import com.getir.rig.util.BaseResponse;
 import com.getir.rig.validation.annotation.RigRestLogger;
-import com.getir.rig.viewobject.CustomerRequest;
+import com.getir.rig.viewobject.ProductRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -21,59 +22,61 @@ import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Customer Controller
+ * Product Controller
  */
 
 @RestController
-@RequestMapping("/customer")
-@Api(value = "/customer")
-public class CustomerController {
+@RequestMapping("/product")
+@Api(value = "/product")
+public class ProductController {
 
-    private CustomerService customerService;
+    private ProductService productService;
+
     @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @RigRestLogger
-    @PreAuthorize("#oauth2.hasScope('customer_register') and hasAuthority('ROLE_OPERATOR')")
-    @ApiOperation(value = "register", notes = "Register a customer")
+    @PreAuthorize("#oauth2.hasScope('product_create') and hasAuthority('ROLE_OPERATOR')")
+    @ApiOperation(value = "create", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Customer successfully registered"),
+            @ApiResponse(code = 200, message = "Product successfully created"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON, produces = "application/json;encoding=utf-8")
-    public ResponseEntity<BaseResponse<Customer>> register(@RequestBody @Valid CustomerRequest customerRequest) {
-        Customer customer = customerService.register(customerRequest);
-        return ResponseEntity.ok(new BaseResponse<>(customer));
+    public ResponseEntity<BaseResponse<Product>> create(@Valid @RequestBody ProductRequest productRequest) {
+        Product product = productService.create(productRequest);
+        return ResponseEntity.ok(new BaseResponse<>(product));
     }
 
     @RigRestLogger
-    @PreAuthorize("#oauth2.hasScope('customer_read') and hasAuthority('ROLE_OPERATOR')")
-    @ApiOperation(value = "list", notes = "List customers", response = Iterable.class)
+    @PreAuthorize("#oauth2.hasScope('product_read') and hasAuthority('ROLE_OPERATOR')")
+    @ApiOperation(value = "productDetail", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Product successfully retrieved"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    @GetMapping(value = "{id}")
+    public ResponseEntity<BaseResponse<ProductDto>> getProductDetail(@PathVariable long id) {
+        ProductDto productDto = productService.get(id);
+        return ResponseEntity.ok(new BaseResponse<>(productDto));
+    }
+
+    @RigRestLogger
+    @PreAuthorize("#oauth2.hasScope('product_list') and hasAuthority('ROLE_OPERATOR')")
+    @ApiOperation(value = "View a list of product", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
-    @GetMapping(value = "/list", consumes = MediaType.APPLICATION_JSON, produces = "application/json;encoding=utf-8")
-    public ResponseEntity<BaseResponse<CustomerPageResult>> list(Pageable pageable){
-        CustomerPageResult pageResult = customerService.list(pageable);
+    @GetMapping(value = "/list")
+    public ResponseEntity<BaseResponse<ProductPageResult>> list(Pageable pageable) {
+        ProductPageResult pageResult = productService.list(pageable);
         return ResponseEntity.ok(new BaseResponse<>(pageResult));
     }
 
-    @RigRestLogger
-    @PreAuthorize("#oauth2.hasScope('order_list') and hasAuthority('ROLE_OPERATOR')")
-    @ApiOperation(value = "View a list of customer's order", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
-    @GetMapping(value = "/{id}/orderList")
-    public ResponseEntity<BaseResponse<OrderPageResult>> listCustomerOrder(@PathVariable Long id, Pageable pageable) {
-        OrderPageResult pageResult = customerService.customerOrderList(id, pageable);
-        return ResponseEntity.ok(new BaseResponse<>(pageResult));
-    }
 }
