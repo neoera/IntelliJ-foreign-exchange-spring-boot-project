@@ -1,17 +1,15 @@
 package com.getir.rig.entity;
 
 import com.getir.rig.entity.base.GenericEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
+@EqualsAndHashCode@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="STOCK")

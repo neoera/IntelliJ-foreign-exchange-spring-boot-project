@@ -1,17 +1,15 @@
 package com.getir.rig.entity;
 
 import com.getir.rig.entity.base.GenericEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
+@EqualsAndHashCode@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="ADDRESS")
@@ -36,8 +34,8 @@ class Address implements GenericEntity<Long> {
     @Column(name="TYPE", length=4, nullable=false)
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
-    private Customer customer;
+    private Customer customer;*/
 
 }

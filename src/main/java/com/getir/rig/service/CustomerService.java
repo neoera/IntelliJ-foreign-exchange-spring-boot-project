@@ -10,6 +10,7 @@ import com.getir.rig.entity.Order;
 import com.getir.rig.exception.type.RecordNotFoundException;
 import com.getir.rig.repository.CustomerRepository;
 import com.getir.rig.repository.OrderRepository;
+import com.getir.rig.util.RigCommon;
 import com.getir.rig.util.RigValidationEnum;
 import com.getir.rig.viewobject.CustomerRequest;
 import org.dozer.DozerBeanMapper;
@@ -56,7 +57,7 @@ public class CustomerService {
         Page<Customer> customers = customerRepository.findAll(pageable);
         CustomerPageResult result = new CustomerPageResult();
 
-        if (customers.getSize() > 0){
+        if (!customers.isEmpty()){
             List<CustomerDto> customerDtoList = new ArrayList<>();
             customers.forEach(customer -> {
                 CustomerDto customerDto = mapper.map(customer, CustomerDto.class);
@@ -83,13 +84,9 @@ public class CustomerService {
         orders.forEach(order -> {
             OrderDto orderDto = new OrderDto();
             orderDto.setId(order.getOrderId());
-            orderDto.setCustomerId(order.getCustomer().getCustomerId());
+            orderDto.setCustomerId(customer.get().getCustomerId());
 
-            List<OrderItemDto> orderItemDtos = new ArrayList<>();
-            order.getOrderItems().forEach(orderItem -> {
-                OrderItemDto orderItemDto = mapper.map(orderItem, OrderItemDto.class);
-                orderItemDto.setProductId(orderItem.getProduct().getProductId());
-            });
+            List<OrderItemDto> orderItemDtos = RigCommon.getOrderItemDtos(order);
             orderDto.setOrderItemDtos(orderItemDtos);
 
             orderDtoList.add(orderDto);

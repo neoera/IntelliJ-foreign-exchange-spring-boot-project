@@ -3,8 +3,10 @@ package com.getir.rig.service;
 import com.getir.rig.dto.ProductDto;
 import com.getir.rig.dto.page.ProductPageResult;
 import com.getir.rig.entity.Product;
+import com.getir.rig.entity.Stock;
 import com.getir.rig.exception.type.RecordNotFoundException;
 import com.getir.rig.repository.ProductRepository;
+import com.getir.rig.repository.StockRepository;
 import com.getir.rig.util.RigValidationEnum;
 import com.getir.rig.viewobject.ProductRequest;
 import org.dozer.DozerBeanMapper;
@@ -28,16 +30,25 @@ public class ProductService {
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
+    private final StockRepository stockRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, StockRepository stockRepository) {
         this.productRepository = productRepository;
+        this.stockRepository = stockRepository;
     }
 
     @Transactional
     public Product create(ProductRequest productRequest) {
         logger.info("creating new customer: {}", productRequest);
         Product product = mapper.map(productRequest, Product.class);
+
+        Optional<Stock> stock = stockRepository.findById(productRequest.getStockId());
+        if (!stock.isPresent()){
+            throw new RecordNotFoundException(RigValidationEnum.STOCK_NOT_FOUND.getMessage());
+        }
+
+        product.setStock(stock.get());
         product = productRepository.save(product);
         logger.info("new product created successfully with Id: {}", product.getProductId());
         return product;
@@ -50,23 +61,26 @@ public class ProductService {
             throw new RecordNotFoundException(RigValidationEnum.PRODUCT_NOT_FOUND.getMessage());
         }
         logger.info("product get successful with id: {}", id);
-        return mapper.map(product, ProductDto.class);
+        ProductDto productDto = mapper.map(product.get(), ProductDto.class);
+        productDto.setStockId(product.get().getStock().getStockId());
+        return productDto;
     }
 
     public ProductPageResult list(Pageable pageable) {
-        Page<Product> customers = productRepository.findAll(pageable);
+        Page<Product> products = productRepository.findAll(pageable);
         ProductPageResult result = new ProductPageResult();
 
-        if (customers.getSize() > 0){
-            List<ProductDto> customerDtoList = new ArrayList<>();
-            customers.forEach(customer -> {
-                ProductDto customerDto = mapper.map(customer, ProductDto.class);
-                customerDtoList.add(customerDto);
+        if (!products.isEmpty()){
+            List<ProductDto> productDtos = new ArrayList<>();
+            products.forEach(product -> {
+                ProductDto productDto = mapper.map(product, ProductDto.class);
+                productDto.setStockId(product.getStock().getStockId());
+                productDtos.add(productDto);
             });
 
-            result.setProductDtoList(customerDtoList);
-            result.setTotalPages(customers.getTotalPages());
-            result.setGetTotalElements(customers.getTotalElements());
+            result.setProductDtoList(productDtos);
+            result.setTotalPages(products.getTotalPages());
+            result.setGetTotalElements(products.getTotalElements());
         }
         return result;
     }

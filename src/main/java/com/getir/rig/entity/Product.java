@@ -1,10 +1,7 @@
 package com.getir.rig.entity;
 
 import com.getir.rig.entity.base.GenericEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -12,8 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
+@EqualsAndHashCode@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="PRODUCT")
@@ -35,7 +33,7 @@ public class Product implements GenericEntity<Long> {
     @Column(name="SERIAL_NUMBER", nullable=false)
     private String serialNumber;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "STOCK_ID", referencedColumnName = "STOCK_ID")
     private Stock stock;
 

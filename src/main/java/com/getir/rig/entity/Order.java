@@ -1,10 +1,8 @@
 package com.getir.rig.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.getir.rig.entity.base.GenericEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -13,7 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,11 +27,12 @@ public class Order implements GenericEntity<Long> {
     @Column(name = "ORDER_ID", updatable = false, nullable = false)
     private Long orderId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CUSTOMER_ID", nullable = false)
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderId", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(name="CREATE_DATE", nullable = false)

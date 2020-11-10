@@ -47,7 +47,7 @@ public class StockService {
         Page<Stock> stocks = stockRepository.findAll(pageable);
         StockPageResult result = new StockPageResult();
 
-        if (stocks.getSize() > 0){
+        if (!stocks.isEmpty()){
             List<StockDto> stockDtoList = new ArrayList<>();
             stocks.forEach(stock -> {
                 StockDto stockDto = mapper.map(stock, StockDto.class);
@@ -68,7 +68,7 @@ public class StockService {
             throw new RecordNotFoundException(RigValidationEnum.STOCK_NOT_FOUND.getMessage());
         }
         logger.info("stock get successful with id: {}", id);
-        return mapper.map(stock, StockDto.class);
+        return mapper.map(stock.get(), StockDto.class);
     }
 
 }

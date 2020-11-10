@@ -1,20 +1,16 @@
 package com.getir.rig.entity;
 
 import com.getir.rig.entity.base.GenericEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
+@EqualsAndHashCode@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="CUSTOMER")
@@ -42,10 +38,10 @@ public class Customer implements GenericEntity<Long> {
     @Column(name="CREATE_DATE", nullable=false)
     private Date createDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-    private Set<Address> addresses = new HashSet<>();
+    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private Set<Address> addresses = new HashSet<>();*/
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
 }
