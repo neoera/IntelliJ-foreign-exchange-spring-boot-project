@@ -23,8 +23,8 @@ import javax.ws.rs.core.MediaType;
  */
 
 @RestController
-@RequestMapping("/order")
-@Api(value = "/order")
+@RequestMapping("order")
+@Api(value = "order")
 public class OrderController {
 
     private OrderService orderService;

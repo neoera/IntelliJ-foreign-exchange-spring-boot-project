@@ -26,8 +26,8 @@ import javax.ws.rs.core.MediaType;
  */
 
 @RestController
-@RequestMapping("/product")
-@Api(value = "/product")
+@RequestMapping("product")
+@Api(value = "product")
 public class ProductController {
 
     private ProductService productService;

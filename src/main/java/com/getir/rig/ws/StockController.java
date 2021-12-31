@@ -25,8 +25,8 @@ import javax.ws.rs.core.MediaType;
  */
 
 @RestController
-@RequestMapping("/stock")
-@Api(value = "/stock")
+@RequestMapping("stock")
+@Api(value = "stock")
 public class StockController {
 
     private StockService stockService;

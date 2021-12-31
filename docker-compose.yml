@@ -1,0 +1,24 @@
+version: '3.8'
+networks:
+  web-db-compose:
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=bookdb
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - web-db-compose
+  web-app:
+    image: web-app-db
+    build:
+      context: .
+      dockerfile: web-wait.Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - web-db-compose
+    depends_on:
+      - db

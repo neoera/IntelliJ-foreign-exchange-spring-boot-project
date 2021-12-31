@@ -25,8 +25,8 @@ import javax.ws.rs.core.MediaType;
  */
 
 @RestController
-@RequestMapping("/customer")
-@Api(value = "/customer")
+@RequestMapping("customer")
+@Api(value = "customer")
 public class CustomerController {
 
     private CustomerService customerService;
@@ -51,7 +51,7 @@ public class CustomerController {
 
     @RigRestLogger
     @PreAuthorize("#oauth2.hasScope('customer_read') and hasAuthority('ROLE_OPERATOR')")
-    @ApiOperation(value = "list", notes = "List customers", response = Iterable.class)
+    @ApiOperation(value = "list", notes = "List customers")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -65,7 +65,7 @@ public class CustomerController {
 
     @RigRestLogger
     @PreAuthorize("#oauth2.hasScope('order_list') and hasAuthority('ROLE_OPERATOR')")
-    @ApiOperation(value = "View a list of customer's order", response = Iterable.class)
+    @ApiOperation(value = "View a list of customer's order")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
